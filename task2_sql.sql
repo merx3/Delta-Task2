@@ -15,9 +15,9 @@ create table EmployeeShifts
 (
 	Employee_id INT NOT NULL auto_increment,
 	Shift_id INT NOT NULL,
-    is_available bool NOT NULL,
-    is_taken bool NOT NULL,
-    FOREIGN KEY (Shift_id) REFERENCES Shifts(id),
+        is_available bool NOT NULL,
+        is_taken bool NOT NULL,
+        FOREIGN KEY (Shift_id) REFERENCES Shifts(id),
 	PRIMARY KEY (Employee_id,Shift_id)
 );
 
