@@ -1,38 +1,39 @@
 /*Database SQL for Delta-Task 2 */
-create database Delta_Task2;
-use Delta_Task2;
+create database delta_task2;
+use delta_task2;
 
 /*Create tables */
-create table Shifts
+create table shifts
 (
-	id INT NOT NULL auto_increment PRIMARY KEY,
-	Day INT NOT NULL,
-	Start INT NOT NULL,
-	End INT NOT NULL
+	shift_id INT NOT NULL auto_increment PRIMARY KEY,
+	day INT NOT NULL,
+	start INT NOT NULL,
+	end INT NOT NULL
 );
 
-create table EmployeeShifts
+create table employee_shifts
 (
-	Employee_id INT NOT NULL auto_increment,
-	Shift_id INT NOT NULL,
+	employee_id INT NOT NULL,
+	shift_id INT NOT NULL,
         is_available bool NOT NULL,
         is_taken bool NOT NULL,
-        FOREIGN KEY (Shift_id) REFERENCES Shifts(id),
-	PRIMARY KEY (Employee_id,Shift_id)
+        FOREIGN KEY (shift_id) REFERENCES Shifts(shift_id),
+        FOREIGN KEY (employee_id) REFERENCES Employees(employee_Id),
+	PRIMARY KEY (employee_id,shift_id)
 );
 
-create table Employees
+create table employees
 (
-	id INT NOT NULL auto_increment PRIMARY KEY,
-	Name VARCHAR(15) NOT NULL
+	employee_id INT NOT NULL auto_increment PRIMARY KEY,
+	name VARCHAR(255) NOT NULL
 );
 
-create table EmployeeFreeTimes
+create table employee_free_times
 (
-	id INT NOT NULL auto_increment PRIMARY KEY,
-	Employee_id INT NOT NULL,
-	Day INT NOT NULL,
-	Start INT NOT NULL,
-	End INT NOT NULL,
-	FOREIGN KEY (Employee_id) REFERENCES EmployeeShifts(Employee_id)
+	employee_free_time_id INT NOT NULL auto_increment PRIMARY KEY,
+	employee_id INT NOT NULL,
+	day INT NOT NULL,
+	start INT NOT NULL,
+	end INT NOT NULL,
+	FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
 );
