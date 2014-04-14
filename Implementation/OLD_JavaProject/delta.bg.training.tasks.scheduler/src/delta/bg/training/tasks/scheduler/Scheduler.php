@@ -449,8 +449,6 @@ class Scheduler {
 	}
 
 	private static function sortEmployeesByFreeTimeInDay($employees, $day) {
-		//int currentFreeHours, nextFreeHours;
-		//LinkedList<Employee> orderedEmployees = new LinkedList<Employee>(employees);
                 $orderedEmployees = array();
 		foreach($employees as $employee){
 			$orderedEmployees[] = $employee;
@@ -470,66 +468,67 @@ class Scheduler {
 		return $orderedEmployees;
 	}
 	
-	private static LinkedList<Employee> sortEmployeesByWorkHours(
-			LinkedList<Employee> employees) {
-		int currentWorkHours, nextWorkHours;
-		LinkedList<Employee> orderedEmployees = new LinkedList<Employee>(employees);
-		for (int i = 0; i < orderedEmployees.size(); i++) {
-			currentWorkHours = orderedEmployees.get(i).getWorkHours();
-			for (int j = i + 1; j < orderedEmployees.size(); j++) {
-				nextWorkHours = orderedEmployees.get(j).getWorkHours();
-				if (currentWorkHours > nextWorkHours) {
-					Employee swap = orderedEmployees.get(i);
-					orderedEmployees.set(i, orderedEmployees.get(j));
-					orderedEmployees.set(j, swap);
-					currentWorkHours = nextWorkHours;
+	private static function sortEmployeesByWorkHours($employees) {
+		//int currentWorkHours, nextWorkHours;
+		//LinkedList<Employee> orderedEmployees = new LinkedList<Employee>(employees);
+		$orderedEmployees = arrray();
+		foreach($employees as $employee){
+			$orderedEmployees[] = $employee;
+		}
+		for ($i = 0; $i < count($orderedEmployees); $i++) {
+			$currentWorkHours = $orderedEmployees[$i]->getWorkHours();
+			for ($j = $i + 1; $j < count($orderedEmployees); $j++) {
+				$nextWorkHours = $orderedEmployees[$j]->getWorkHours();
+				if ($currentWorkHours > $nextWorkHours) {
+					$swap = $orderedEmployees[$i];
+					$orderedEmployees[$i] = $orderedEmployees[$j];
+					$orderedEmployees[$j] = $swap;
+					$currentWorkHours = $nextWorkHours;
 				}
 			}
 		}
-		return orderedEmployees;
+		return $orderedEmployees;
 	}
  
-	public static void rearrangeAveraging(){
-		int result = -1;
-		LinkedList<Employee> employeesTemp = new LinkedList<Employee>();
-		int indexOfEmployeeWithLeastWorkHours = 0;
-		int indexOfEmployeeWithMostWorkHours = numEmployees - 1;
-		long time1 = System.currentTimeMillis();
-		long time2;
+	public static function rearrangeAveraging(){
+		$result = -1;
+		//$employeesTemp = array();
+		$indexOfEmployeeWithLeastWorkHours = 0;
+		$indexOfEmployeeWithMostWorkHours = self::$numEmployees - 1;
+		$time1 = round(microtime(true) * 1000); // get time in milliseconds
 		while(true){
-			employeesTemp = sortEmployeesByWorkHours(employees);
-			while(result != 0){
-				result = exchangeHours((employeesTemp.get(indexOfEmployeeWithLeastWorkHours).getId()-1), (employeesTemp.get(indexOfEmployeeWithMostWorkHours).getId()-1));
-				if(result != 0) indexOfEmployeeWithMostWorkHours--;
-				if(indexOfEmployeeWithLeastWorkHours >= indexOfEmployeeWithMostWorkHours){
-					indexOfEmployeeWithLeastWorkHours++;
-					indexOfEmployeeWithMostWorkHours = numEmployees - 1;
+			$employeesTemp = self::sortEmployeesByWorkHours($employees);
+			while($result != 0){
+				$result = self::exchangeHours(($employeesTemp[$indexOfEmployeeWithLeastWorkHours]->getId()-1), ($employeesTemp[$indexOfEmployeeWithMostWorkHours]->getId()-1));
+				if($result != 0) $indexOfEmployeeWithMostWorkHours--;
+				if($indexOfEmployeeWithLeastWorkHours >= $indexOfEmployeeWithMostWorkHours){
+					$indexOfEmployeeWithLeastWorkHours++;
+					$indexOfEmployeeWithMostWorkHours = self::$numEmployees - 1;
 				}
-				if(indexOfEmployeeWithLeastWorkHours >= (numEmployees - 2)){
+				if($indexOfEmployeeWithLeastWorkHours >= (self::$numEmployees - 2)){
 					return;
 				}
 			}
-			result = -1;
-			time2 = System.currentTimeMillis();
-			if(time2 - time1 >= 5000)
+			$result = -1;
+			$time2 = round(microtime(true) * 1000);
+			if($time2 - $time1 >= 8000)
 				break;
 		}
-		System.out.println("DONE!");
 	}
 	
-	public static int exchangeHours(int indexOfRecipient, int indexOfDonor){
-		int result1 = -1;
-		int result2 = -1;
-		for(int i=0;i<14;i++){
-			for(int j=0;j<numShifts;j++){
-				if(employees.get(indexOfRecipient).getAvailableShifts()[i][j] && employees.get(indexOfRecipient).getWorkShifts()[i][j] == 0 && employees.get(indexOfDonor).getWorkShifts()[i][j]>0){
-					result1 = dismissEmployee(employees.get(indexOfDonor), i, j);
-					if(result1 == 0){
-						result2 = enrollEmployee(employees.get(indexOfRecipient), i, j);
-						if(result2 ==0)
+	public static function exchangeHours($indexOfRecipient, $indexOfDonor){
+		$result1 = -1;
+		$result2 = -1;
+		for($i=0;$i<14;$i++){
+			for($j=0;$j<self::$numShifts;$j++){
+				if(self::$employees[$indexOfRecipient]->getAvailableShifts()[$i][$j] && self::$employees[$indexOfRecipient]->getWorkShifts()[$i][$j] == 0 && self::$employees[$indexOfDonor]->getWorkShifts()[$i][$j]>0){
+					$result1 = self::dismissEmployee(self::$employees[$indexOfDonor], $i, $j);
+					if($result1 == 0){
+						$result2 = self::enrollEmployee(self::$employees[$indexOfRecipient], $i, $j);
+						if($result2 ==0)
 							return 0;
 						else{
-							enrollEmployee(employees.get(indexOfDonor), i, j);
+							self::enrollEmployee(self::$employees[$indexOfDonor], $i, $j);
 						}
 					}
 				}
@@ -538,29 +537,26 @@ class Scheduler {
 		return 1;
 	}
 	
-	public static void dismissHours(){
-		int countShifts;
-		int result;
-		int shift;
-		for(Employee em : employees){
-			if(em.getWorkHours() > maxWorkHours){
-				for(int i=0;i<14;i++){
-					countShifts=0;
-					for(int j=0;j<numShifts;j++){
-						if(em.getWorkShifts()[i][j]>0){
-							countShifts++;
+	public static function dismissHours(){
+		foreach(self::$employees as $em){
+			if($em->getWorkHours() > self::$maxWorkHours){
+				for($i=0;$i<14;$i++){
+					$countShifts=0;
+					for($j=0;$j<self::$numShifts;$j++){
+						if($em->getWorkShifts()[$i][$j]>0){
+							$countShifts++;
 						}
 					}
-					if(countShifts > 1){
-						shift=0;
+					if($countShifts > 1){
+						$shift=0;
 						while(true){
-							result = dismissEmployee(em, i, shift);
-							shift++;
-							if(result == 0)
+							$result = self::dismissEmployee($em, $i, $shift);
+							$shift++;
+							if($result == 0)
 								break;
 						}
 					}
-					if(em.getWorkHours() <= maxWorkHours)
+					if($em->getWorkHours() <= self::$maxWorkHours)
 						break;
 				}
 			}
@@ -568,7 +564,7 @@ class Scheduler {
 	}
 }
 
--->
+
 ?>
 
 <!-- ^^^^^^^^^^^^^^^^^^^ PHP -->
