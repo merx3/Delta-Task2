@@ -298,7 +298,7 @@ class Scheduler {
 			throw new Exception("hoursInShift is not an integer");			
 		}
 		if ($hoursInShift >= 1 && $hoursInShift < 24) {
-			self::$hoursInShift = $hoursInShift;
+			self::$hoursInShift = hoursInShift;
 		}
 	}
 

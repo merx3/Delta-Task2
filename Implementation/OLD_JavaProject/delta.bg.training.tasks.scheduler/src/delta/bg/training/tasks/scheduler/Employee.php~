@@ -163,7 +163,7 @@ class Employee{
 
 
 
-<!-- ^^^^^^^^^ PHP -->
+// ^^^^^^^^^ PHP
 
 <!--
 public class Employee{
