@@ -298,74 +298,91 @@ class Scheduler {
 			throw new Exception("hoursInShift is not an integer");			
 		}
 		if ($hoursInShift >= 1 && $hoursInShift < 24) {
-			self::$hoursInShift = hoursInShift;
+			self::$hoursInShift = $hoursInShift;
 		}
 	}
 
-	public static int getBreakBetweenShifts() {
-		return breakBetweenShifts;
+	public static function getBreakBetweenShifts() {
+		return self::$breakBetweenShifts;
 	}
 
-	public static void setBreakBetweenShifts(int breakBetweenShifts) {
-		if (breakBetweenShifts > 0 && breakBetweenShifts < 24) {
-			Scheduler.breakBetweenShifts = breakBetweenShifts;
+	public static function setBreakBetweenShifts($breakBetweenShifts) {
+		if(!is_int($breakBetweenShifts){
+			throw new Exception("breakBetweenShifts is not an integer");			
+		}
+		if ($breakBetweenShifts > 0 && $breakBetweenShifts < 24) {
+			self::$breakBetweenShifts = $breakBetweenShifts;
 		}
 	}	
 
-	public static int[] getShiftStart() {
-		return shiftStart;
+	public static function getShiftStart() {
+		return self::$shiftStart;
 	}
 
-	public static void setShiftStart(int[] shiftStart) {
-		Scheduler.shiftStart = shiftStart;
+	public static function setShiftStart($shiftStart) {
+		if(!is_array($shiftStart){
+			throw new Exception("shiftStart is not an array");			
+		}
+		self::$shiftStart = $shiftStart;
 	}
 
-	public static int[][][] getOccupiedWorkplace() {
-		return occupiedWorkplace;
+	public static function getOccupiedWorkplace() {
+		return self::$occupiedWorkplace;
 	}
 
-	public static void setOccupiedWorkplace(int[][][] occupiedWorkplace) {
-		Scheduler.occupiedWorkplace = occupiedWorkplace;
+	public static function setOccupiedWorkplace($occupiedWorkplace) {
+		if(!is_array($occupiedWorkplace){
+			throw new Exception("occupiedWorkplace is not an array");			
+		}
+		self::$occupiedWorkplace = $occupiedWorkplace;
 	}
 
-	public static LinkedList<Employee> getEmployees() {
-		return employees;
+	public static function getEmployees() {
+		return self::$employees;
 	}
 
-	public static void setEmployees(LinkedList<Employee> employees) {
-		Scheduler.employees = employees;
+	public static function setEmployees($employees) {
+		if(!is_array($employees){
+			throw new Exception("employees is not an array");			
+		}
+		self::$employees = $employees;
 	}
 
-	public static int getMinWorkHours() {
-		return minWorkHours;
+	public static function getMinWorkHours() {
+		return self::$minWorkHours;
 	}
 
-	public static void setMinWorkHours(int minWorkHours) {
-		if (maxWorkHours > 0) {
-			if (minWorkHours <= maxWorkHours) {
-				Scheduler.minWorkHours = minWorkHours;
+	public static function setMinWorkHours($minWorkHours) {
+		if(!is_int($minWorkHours){
+			throw new Exception("minWorkHours is not an integer");			
+		}
+		if (self::$maxWorkHours > 0) {
+			if ($minWorkHours <= self::$maxWorkHours) {
+				self::$minWorkHours = $minWorkHours;
 			}
 		}
 	}
 
-	public static int getMaxWorkHours() {
-		return maxWorkHours;
+	public static function getMaxWorkHours() {
+		return self::$maxWorkHours;
 	}
 
-	public static void setMaxWorkHours(int maxWorkHours) {
-		if (maxWorkHours > minWorkHours && maxWorkHours <= 80) {
-			Scheduler.maxWorkHours = maxWorkHours;
+	public static function setMaxWorkHours($maxWorkHours) {
+		if(!is_int($maxWorkHours){
+			throw new Exception("maxWorkHours is not an integer");			
+		}
+		if ($maxWorkHours > self::$minWorkHours && $maxWorkHours <= 80) {
+			self::$maxWorkHours = $maxWorkHours;
 		}
 	}
 	
-	public static void arrangeHours(int day){
-		int result;
-		LinkedList<Employee> employeesTemp = sortEmployeesByFreeTimeInDay(employees, day);
-		for(int i=0;i<numEmployees;i++){
-			for(int j=0;j<numShifts;j++){
-				if(employeesTemp.get(i).getAvailableShifts()[day][j]){
-					result = enrollEmployee(employeesTemp.get(i), day, j);
-					if(result == 0)
+	public static function arrangeHours($day){
+		$employeesTemp = self::sortEmployeesByFreeTimeInDay(self::$employees, $day);
+		for($i=0;$i<self::$numEmployees;$i++){
+			for($j=0;$j<self::$numShifts;$j++){
+				if($employeesTemp[$i]->getAvailableShifts()[$day][$j]){
+					$result = self::enrollEmployee($employeesTemp[$i], $day, $j);
+					if($result == 0)
 						break;
 				}
 			}
@@ -373,77 +390,80 @@ class Scheduler {
 	}
 
 	// find the workplaces in the current shift that are occupied
-	private static int getEmployeesCountInShift(int day, int shift){
-		int occupiedCount = 0;
-		for (int workplace = 0; workplace < numWorkplaces; workplace++) {
-			if (occupiedWorkplace[day][shift][workplace] != 0) {
-				occupiedCount++;
+	private static function getEmployeesCountInShift($day, $shift){
+		$occupiedCount = 0;
+		for ($workplace = 0; $workplace < self::$numWorkplaces; $workplace++) {
+			if (self::$occupiedWorkplace[$day][$shift][$workplace] != 0) {
+				$occupiedCount++;
 			}
 		}
-		return occupiedCount;
+		return $occupiedCount;
 	}	
 	
-	public static void addMoreHours(int day){
-		for (int shift = 0; shift < numShifts; shift++) {
-			addMoreHoursForShift(day, shift);
+	public static function addMoreHours($day){
+		for ($shift = 0; $shift < self::$numShifts; $shift++) {
+			self::addMoreHoursForShift($day, $shift);
 		}	
 	}
 
-	private static void addMoreHoursForShift(int day, int shift) {
-		int occupiedCount = getEmployeesCountInShift(day, shift);
+	private static function addMoreHoursForShift($day, $shift) {
+		$occupiedCount = self::getEmployeesCountInShift($day, $shift);
 		
-		if (occupiedCount < numWorkplaces) {
-			LinkedList<Employee> orderedByFreeTime = sortEmployeesByFreeTimeInDay(employees, day);
-			for (int i =  orderedByFreeTime.size() - 1; i >= 0; i--) {
-				Employee emp = orderedByFreeTime.get(i);
-				if (emp.getWorkShifts()[day][shift] == 0 && emp.getAvailableShifts()[day][shift]) {
-					enrollEmployee(emp, day, shift);
-					addMoreHoursForShift(day,shift);
+		if ($occupiedCount < self::$numWorkplaces) {
+			$orderedByFreeTime = self::sortEmployeesByFreeTimeInDay($employees, $day);
+			for ($i =  count($orderedByFreeTime) - 1; $i >= 0; $i--) {
+				$emp = $orderedByFreeTime[i];
+				if ($emp->getWorkShifts()[$day][$shift] == 0 && $emp->getAvailableShifts()[$day][$shift]) {
+					self::enrollEmployee($emp, $day, $shift);
+					self::addMoreHoursForShift($day,$shift);
 					break;
 				}
 			}
 		}
 	}
 	
-	private static int enrollEmployee(Employee employee, int day, int shift) {
-		for (int workPlaceNum = 0; workPlaceNum < numWorkplaces; workPlaceNum++) { // the shift (1-2, or in the arrray 0-1)
-			if (occupiedWorkplace[day][shift][workPlaceNum] == 0 && employee.getWorkShifts()[day][shift] == 0) {
-				employee.getWorkShifts()[day][shift] = workPlaceNum + 1;
-				employee.getAvailableHours()[day] -= Scheduler.hoursInShift;
-				occupiedWorkplace[day][shift][workPlaceNum] = employee.getId();
-				employee.setWorkHours(employee.getWorkHours() + hoursInShift);
+	private static function enrollEmployee($employee, $day, $shift) {
+		for ($workPlaceNum = 0; $workPlaceNum < self::$numWorkplaces; $workPlaceNum++) { // the shift (1-2, or in the arrray 0-1)
+			if ($occupiedWorkplace[$day][$shift][$workPlaceNum] == 0 && $employee->getWorkShifts()[$day][$shift] == 0) {
+				$employee->getWorkShifts()[$day][$shift] = $workPlaceNum + 1;
+				$employee->getAvailableHours()[$day] -= self::$hoursInShift;
+				$occupiedWorkplace[$day][$shift][$workPlaceNum] = $employee->getId();
+				$employee->setWorkHours($employee->getWorkHours() + self::$hoursInShift);
 				return 0;
 			}
 		}
 		return 1;
 	}
 	
-	private static int dismissEmployee(Employee employee, int day, int shift){
-		for(int workPlaceNum = 0; workPlaceNum < numWorkplaces; workPlaceNum++){
-			if(occupiedWorkplace[day][shift][workPlaceNum] == employee.getId()){
-				employee.getWorkShifts()[day][shift] = 0;
-				employee.getAvailableHours()[day] += Scheduler.hoursInShift;
-				occupiedWorkplace[day][shift][workPlaceNum] = 0;
-				employee.setWorkHours(employee.getWorkHours() - hoursInShift);
+	private static function dismissEmployee($employee, $day, $shift){
+		for($workPlaceNum = 0; $workPlaceNum < self::$numWorkplaces; $workPlaceNum++){
+			if(self::$occupiedWorkplace[$day][$shift][$workPlaceNum] == $employee->getId()){
+				$employee->getWorkShifts()[$day][$shift] = 0;
+				$employee->getAvailableHours()[$day] += self::$hoursInShift;
+				self::$occupiedWorkplace[$day][$shift][$workPlaceNum] = 0;
+				$employee->setWorkHours($employee->getWorkHours() - self::$hoursInShift);
 				return 0;
 			}
 		}
 		return 1;
 	}
 
-	private static LinkedList<Employee> sortEmployeesByFreeTimeInDay(
-			LinkedList<Employee> employees, int day) {
-		int currentFreeHours, nextFreeHours;
-		LinkedList<Employee> orderedEmployees = new LinkedList<Employee>(employees);
-		for (int i = 0; i < orderedEmployees.size(); i++) {
-			currentFreeHours = orderedEmployees.get(i).getAvailableHours()[day];
-			for (int j = i + 1; j < orderedEmployees.size(); j++) {
-				nextFreeHours = orderedEmployees.get(j).getAvailableHours()[day];
-				if (currentFreeHours > nextFreeHours) {
-					Employee swap = orderedEmployees.get(i);
-					orderedEmployees.set(i, orderedEmployees.get(j));
-					orderedEmployees.set(j, swap);
-					currentFreeHours = nextFreeHours;
+	private static function sortEmployeesByFreeTimeInDay($employees, $day) {
+		//int currentFreeHours, nextFreeHours;
+		//LinkedList<Employee> orderedEmployees = new LinkedList<Employee>(employees);
+                $orderedEmployees = array();
+		foreach($employees as $employee){
+			$orderedEmployees[] = $employee;
+		}
+		for ($i = 0; $i < count($orderedEmployees); $i++) {
+			$currentFreeHours = $orderedEmployees[$i]->getAvailableHours()[$day];
+			for ($j = $i + 1; $j < count($orderedEmployees); $j++) {
+				$nextFreeHours = $orderedEmployees[$j]->getAvailableHours()[$day];
+				if ($currentFreeHours > $nextFreeHours) {
+					$swap = $orderedEmployees[$i];
+					$orderedEmployees[$i] = $orderedEmployees[$j];
+					$orderedEmployees[$j] = $swap;
+					$currentFreeHours = $nextFreeHours;
 				}
 			}
 		}
