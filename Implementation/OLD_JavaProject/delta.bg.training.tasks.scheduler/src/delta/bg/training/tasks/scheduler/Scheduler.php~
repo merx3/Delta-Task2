@@ -1,32 +1,31 @@
-
 <?php
+
 // TODO: Get needed info from the web page form before using any of the
 //    methods because of the initialization function. Basically, just like the Java program, 
 //    we need to make sure the parameters are enetered by the user before calling the static class
 
 class Scheduler {
-	private static boolean[] workdays;
-	private static int numWorkplaces;
-	private static int numEmployees;
-	private static int numShifts;
-	private static int workdayStart;
-	private static int workdayEnd;
-	private static int hoursInShift;
-	private static int breakBetweenShifts;
-	private static int minWorkHours;
-	private static int maxWorkHours;
-	private static int [] shiftStart; // start hour of every shift (Ex. shiftStart[0] - start hour of shift 1, shiftStar[1] - start hour of shift 2)
-	private static int[][][] occupiedWorkplace;	// occupiedWorkplace[day][shift number][work place number] 
-	private static LinkedList<Employee> employees;	
-	private static Scanner sc = new Scanner(System.in);
-	private static int i;
+	private static $workdays;
+	private static $numWorkplaces;
+	private static $numEmployees;
+	private static $numShifts;
+	private static $workdayStart;
+	private static $workdayEnd;
+	private static $hoursInShift;
+	private static $breakBetweenShifts;
+	private static $minWorkHours;
+	private static $maxWorkHours;
+	private static $shiftStart; // start hour of every shift (Ex. shiftStart[0] - start hour of shift 1, shiftStar[1] - start hour of shift 2)
+	private static $occupiedWorkplace;	// occupiedWorkplace[day][shift number][work place number] 
+	private static $employees;	
+	private static $i;
 	private static $initialized = false;
 	
 	private static function initialize(){
 		if(self::$initialized){
 			return;
 		}		
-		workdays = array();
+		$workdays = array();
 
 		/*for(i=0;i<7;i++){
 			switch(i){
@@ -211,7 +210,7 @@ class Scheduler {
 		self::$initialized = true;
 	}
 		
-	public static function getWorkdays() {
+	public static function &getWorkdays() {
 		return self::$workdays;
 	}
 
@@ -229,7 +228,7 @@ class Scheduler {
 	}
 
 	public static function setNumWorkplaces($numWorkplaces) {
-		if(!is_int($numWorkplaces){
+		if(!is_int($numWorkplaces)){
 			throw new Exception("numWorkplaces is not an integer");			
 		}
 		if ($numWorkplaces >= 1) {
@@ -242,7 +241,7 @@ class Scheduler {
 	}
 
 	public static function setNumEmployees($numEmployees) {
-		if(!is_int($numEmployees){
+		if(!is_int($numEmployees)){
 			throw new Exception("numEmployees is not an integer");			
 		}
 		if ($numEmployees >= 1) {
@@ -255,7 +254,7 @@ class Scheduler {
 	}
 
 	public static function setWorkdayStart($workdayStart) {
-		if(!is_int($workdayStart){
+		if(!is_int($workdayStart)){
 			throw new Exception("workdayStart is not an integer");			
 		}
 		if ($workdayStart > 0 && $workdayStart < 24) {
@@ -268,7 +267,7 @@ class Scheduler {
 	}
 
 	public static function setWorkdayEnd($workdayEnd) {
-		if(!is_int($workdayEnd){
+		if(!is_int($workdayEnd)){
 			throw new Exception("workdayEnd is not an integer");			
 		}
 		if ($workdayEnd > 0 && $workdayEnd < 24) {
@@ -281,7 +280,7 @@ class Scheduler {
 	}
 
 	public static function setNumShifts($numShifts) {
-		if(!is_int($numShifts){
+		if(!is_int($numShifts)){
 			throw new Exception("numShifts is not an integer");			
 		}
 		if ($numShifts >= 1) {
@@ -294,7 +293,7 @@ class Scheduler {
 	}
 
 	public static function setHoursInShift($hoursInShift) {
-		if(!is_int($hoursInShift){
+		if(!is_int($hoursInShift)){
 			throw new Exception("hoursInShift is not an integer");			
 		}
 		if ($hoursInShift >= 1 && $hoursInShift < 24) {
@@ -307,7 +306,7 @@ class Scheduler {
 	}
 
 	public static function setBreakBetweenShifts($breakBetweenShifts) {
-		if(!is_int($breakBetweenShifts){
+		if(!is_int($breakBetweenShifts)){
 			throw new Exception("breakBetweenShifts is not an integer");			
 		}
 		if ($breakBetweenShifts > 0 && $breakBetweenShifts < 24) {
@@ -315,34 +314,34 @@ class Scheduler {
 		}
 	}	
 
-	public static function getShiftStart() {
+	public static function &getShiftStart() {
 		return self::$shiftStart;
 	}
 
 	public static function setShiftStart($shiftStart) {
-		if(!is_array($shiftStart){
+		if(!is_array($shiftStart)){
 			throw new Exception("shiftStart is not an array");			
 		}
 		self::$shiftStart = $shiftStart;
 	}
 
-	public static function getOccupiedWorkplace() {
+	public static function &getOccupiedWorkplace() {
 		return self::$occupiedWorkplace;
 	}
 
 	public static function setOccupiedWorkplace($occupiedWorkplace) {
-		if(!is_array($occupiedWorkplace){
+		if(!is_array($occupiedWorkplace)){
 			throw new Exception("occupiedWorkplace is not an array");			
 		}
 		self::$occupiedWorkplace = $occupiedWorkplace;
 	}
 
-	public static function getEmployees() {
+	public static function &getEmployees() {
 		return self::$employees;
 	}
 
 	public static function setEmployees($employees) {
-		if(!is_array($employees){
+		if(!is_array($employees)){
 			throw new Exception("employees is not an array");			
 		}
 		self::$employees = $employees;
@@ -353,7 +352,7 @@ class Scheduler {
 	}
 
 	public static function setMinWorkHours($minWorkHours) {
-		if(!is_int($minWorkHours){
+		if(!is_int($minWorkHours)){
 			throw new Exception("minWorkHours is not an integer");			
 		}
 		if (self::$maxWorkHours > 0) {
@@ -368,7 +367,7 @@ class Scheduler {
 	}
 
 	public static function setMaxWorkHours($maxWorkHours) {
-		if(!is_int($maxWorkHours){
+		if(!is_int($maxWorkHours)){
 			throw new Exception("maxWorkHours is not an integer");			
 		}
 		if ($maxWorkHours > self::$minWorkHours && $maxWorkHours <= 80) {
@@ -380,7 +379,8 @@ class Scheduler {
 		$employeesTemp = self::sortEmployeesByFreeTimeInDay(self::$employees, $day);
 		for($i=0;$i<self::$numEmployees;$i++){
 			for($j=0;$j<self::$numShifts;$j++){
-				if($employeesTemp[$i]->getAvailableShifts()[$day][$j]){
+				$availShifts = $employeesTemp[$i]->getAvailableShifts();
+				if($availShifts[$day][$j]){
 					$result = self::enrollEmployee($employeesTemp[$i], $day, $j);
 					if($result == 0)
 						break;
@@ -413,7 +413,9 @@ class Scheduler {
 			$orderedByFreeTime = self::sortEmployeesByFreeTimeInDay($employees, $day);
 			for ($i =  count($orderedByFreeTime) - 1; $i >= 0; $i--) {
 				$emp = $orderedByFreeTime[i];
-				if ($emp->getWorkShifts()[$day][$shift] == 0 && $emp->getAvailableShifts()[$day][$shift]) {
+				$empWS = $emp->getWorkShifts();
+				$empAS = $emp->getAvailableShifts();
+				if ($empWS[$day][$shift] == 0 && $empAS[$day][$shift]) {
 					self::enrollEmployee($emp, $day, $shift);
 					self::addMoreHoursForShift($day,$shift);
 					break;
@@ -424,9 +426,11 @@ class Scheduler {
 	
 	private static function enrollEmployee($employee, $day, $shift) {
 		for ($workPlaceNum = 0; $workPlaceNum < self::$numWorkplaces; $workPlaceNum++) { // the shift (1-2, or in the arrray 0-1)
-			if ($occupiedWorkplace[$day][$shift][$workPlaceNum] == 0 && $employee->getWorkShifts()[$day][$shift] == 0) {
-				$employee->getWorkShifts()[$day][$shift] = $workPlaceNum + 1;
-				$employee->getAvailableHours()[$day] -= self::$hoursInShift;
+			$empWS = $emp->getWorkShifts();
+			if ($occupiedWorkplace[$day][$shift][$workPlaceNum] == 0 && $empWS[$day][$shift] == 0) {
+				$empWS[$day][$shift] = $workPlaceNum + 1;
+				$empAH = $employee->getAvailableHours();
+				$empAH[$day] -= self::$hoursInShift;
 				$occupiedWorkplace[$day][$shift][$workPlaceNum] = $employee->getId();
 				$employee->setWorkHours($employee->getWorkHours() + self::$hoursInShift);
 				return 0;
@@ -438,8 +442,10 @@ class Scheduler {
 	private static function dismissEmployee($employee, $day, $shift){
 		for($workPlaceNum = 0; $workPlaceNum < self::$numWorkplaces; $workPlaceNum++){
 			if(self::$occupiedWorkplace[$day][$shift][$workPlaceNum] == $employee->getId()){
-				$employee->getWorkShifts()[$day][$shift] = 0;
-				$employee->getAvailableHours()[$day] += self::$hoursInShift;
+				$empWS = $emp->getWorkShifts();
+				$empWS[$day][$shift] = 0;
+				$empAH = $employee->getAvailableHours();
+				$empAH[$day] += self::$hoursInShift;
 				self::$occupiedWorkplace[$day][$shift][$workPlaceNum] = 0;
 				$employee->setWorkHours($employee->getWorkHours() - self::$hoursInShift);
 				return 0;
@@ -454,9 +460,11 @@ class Scheduler {
 			$orderedEmployees[] = $employee;
 		}
 		for ($i = 0; $i < count($orderedEmployees); $i++) {
-			$currentFreeHours = $orderedEmployees[$i]->getAvailableHours()[$day];
+			$empiAH = $orderedEmployees[$i]->getAvailableHours();
+			$currentFreeHours = $empAH[$day];
 			for ($j = $i + 1; $j < count($orderedEmployees); $j++) {
-				$nextFreeHours = $orderedEmployees[$j]->getAvailableHours()[$day];
+				$empjAH = $orderedEmployees[$j]->getAvailableHours();
+				$nextFreeHours = $empjAH[$day];
 				if ($currentFreeHours > $nextFreeHours) {
 					$swap = $orderedEmployees[$i];
 					$orderedEmployees[$i] = $orderedEmployees[$j];
@@ -521,7 +529,10 @@ class Scheduler {
 		$result2 = -1;
 		for($i=0;$i<14;$i++){
 			for($j=0;$j<self::$numShifts;$j++){
-				if(self::$employees[$indexOfRecipient]->getAvailableShifts()[$i][$j] && self::$employees[$indexOfRecipient]->getWorkShifts()[$i][$j] == 0 && self::$employees[$indexOfDonor]->getWorkShifts()[$i][$j]>0){
+				$recipEmpAS = self::$employees[$indexOfRecipient]->getAvailableShifts();
+				$recipEmpWS = self::$employees[$indexOfRecipient]->getWorkShifts();
+				$donorEmpWS = self::$employees[$indexOfDonor]->getWorkShifts();
+				if($recipEmpAS[$i][$j] && $recipEmpWS[$i][$j] == 0 && $donorEmpWS[$i][$j]>0){
 					$result1 = self::dismissEmployee(self::$employees[$indexOfDonor], $i, $j);
 					if($result1 == 0){
 						$result2 = self::enrollEmployee(self::$employees[$indexOfRecipient], $i, $j);
@@ -564,12 +575,12 @@ class Scheduler {
 	}
 }
 
--->
-?>
 
-<!-- ^^^^^^^^^^^^^^^^^^^ PHP -->
+// ^^^^^^^^^^^^^^^^^^^ PHP 
 
-<!--
+// vvvvvvvvvvvvvvvvvvv Java
+
+/*
 package delta.bg.training.tasks.scheduler;
 
 import java.util.Scanner;
@@ -1084,4 +1095,5 @@ public class Scheduler {
 	}
 }
 
--->
+*/
+?>
