@@ -26,7 +26,7 @@ class Scheduler {
 			return;
 		}	
 		$currentWd = db_getWorkdays();
-		for ($i=0;$i<7;$i++){
+		for ($i=0,$i<7, $i++){
 			if(in_array($i, $currentWd)){
 				$workdays[$i]=true;
 			}

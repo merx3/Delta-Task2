@@ -21,7 +21,7 @@
 <ul class="days">
 
 	<input type="checkbox" name="monday" value="Monday"<?php //if(Scheduler::$workdays[0]) { echo 'checked'; }?>/>Monday
-	<?php print_r(Scheduler::$workdays);?>
+	<?php print_r(Scheduler::workdays);?>
 
 	<input type="checkbox" name="tuesday" value="Tuesday"/>Tuesday 
 
