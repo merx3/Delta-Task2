@@ -19,21 +19,21 @@
 </div>
 <div >
 <ul class="days">
+	<?php $currentWD = Scheduler::getWorkdays();?>
+	<input type="checkbox" name="monday" value="Monday" <?php if($currentWD[0]) { echo 'checked'; }?>/>Monday
+	
 
-	<input type="checkbox" name="monday" value="Monday"<?php //if(Scheduler::$workdays[0]) { echo 'checked'; }?>/>Monday
-	<?php print_r(Scheduler::$workdays);?>
+	<input type="checkbox" name="tuesday" value="Tuesday" <?php if($currentWD[1]) { echo 'checked'; }?>/>Tuesday 
 
-	<input type="checkbox" name="tuesday" value="Tuesday"/>Tuesday 
+	<input type="checkbox" name="wednesday" value="Wednesday" <?php if($currentWD[2]) { echo 'checked'; }?>/>Wednesday 
 
-	<input type="checkbox" name="wednesday" value="Wednesday"/>Wednesday 
+	<input type="checkbox" name="thursday" value="Thursday" <?php if($currentWD[3]) { echo 'checked'; }?>/>Thursday 
 
-	<input type="checkbox" name="thursday" value="Thursday "/>Thursday 
+	<input type="checkbox" name="friday" value="Friday" <?php if($currentWD[4]) { echo 'checked'; }?>/>Friday    
 
-	<input type="checkbox" name="friday" value="Friday"/>Friday    
+	<input type="checkbox" name="saturday" value="Saturday" <?php if($currentWD[5]) { echo 'checked'; }?>/>Saturday    
 
-	<input type="checkbox" name="saturday" value="Saturday"/>Saturday    
-
-	<input type="checkbox" name="sunday" value="Sunday "/>Sunday 
+	<input type="checkbox" name="sunday" value="Sunday" <?php if($currentWD[6]) { echo 'checked'; }?>/>Sunday 
 </ul>
 </div>
 <br>
@@ -71,6 +71,9 @@ Employee max work hours (for 2 weeks): <select>
 </div>
 <div>
 <ul>
+<?php
+	
+?>
 <li><a href="Employee1">Employee1</a></li>
 <li><a href="Employee2">Employee2</a></li>
 <li><a href="Employee3">Employee3</a></li>
