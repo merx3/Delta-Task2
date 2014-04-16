@@ -62,12 +62,12 @@ Employee max work hours (for 2 weeks): <input type="number" min="20" max="40" st
 <div>
 <ul>
 <?php
-	
+	$employees = Scheduler::getEmployees(); 
+	for($i=0;$i<count($employees);$i++){
+		echo "<li><a href=\"EmployeeInfo.php?id=".$i."\">".$employees[$i]->getName()."</a></li>";
+	}
 ?>
-<li><a href="Employee1">Employee1</a></li>
-<li><a href="Employee2">Employee2</a></li>
-<li><a href="Employee3">Employee3</a></li>
-<li><a href="Employee4">Employee4</a></li>
+
 </ul>
 </div>
 <br>

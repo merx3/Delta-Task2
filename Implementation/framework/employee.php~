@@ -9,6 +9,7 @@ require_once('scheduler.php');
 	
 class Employee{
 	private $id;
+	private $name;
 	private $workHours;
 	private $startHours;
 	private $endHours;
@@ -44,14 +45,27 @@ class Employee{
 		if(!is_int($id)){
 			throw new Exception('id is not integer');
 		}
-		if (id>=1){
-			$this->id = id;
+		if ($id>=1){
+			$this->id = $id;
 		}
 		else {
 			throw new Exception("Invalid ID number!");
 		}
 	}
 	
+	public function getName(){
+		return $this->name;
+	}
+
+	public function setName($name){
+		if(strlen($name)<3){
+			throw new Exception('name must be at least 3 characters');
+		}
+		else {
+			throw new Exception("Invalid ID number!");
+		}
+	}
+
 	public function getWorkHours(){
 		return $this->workHours;
 	}
@@ -165,9 +179,10 @@ class Employee{
 	}	
 
 	private function readEmployeeDataFromDatabase($id){
-		$empl_shifs = db_getEmployeeShifts($this->dbconn, $id);
+		$empl_shifts = db_getEmployeeShifts($this->dbconn, $id);
+		$this->name = db_getEmployeeName($this->dbconn, $id);
 		$empl_taken_shifts_by_day = array();
-		if(is_array($empl_shifs)){
+		if(is_array($empl_shifts)){
 			foreach($empl_shifts as $shift){
 				if ($shift["is_taken"]){
 					$shift_day = $shift["day"];
