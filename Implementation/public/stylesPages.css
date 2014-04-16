@@ -1,0 +1,96 @@
+﻿.WorkDaysStyle {
+	font-family: Tahoma;
+	font-size: x-large;
+	font-style: normal;
+}
+
+.days {
+	font-size: medium;
+	font-weight: bold;
+}
+
+.textStyle {
+	font-family: "Arial Black";
+	font-size: medium;
+	font-weight: normal;
+	color: #000000;
+}
+
+.tableText {
+	font-family: Tahoma;
+	font-size: 15px;
+	font-weight: bold;
+	z-index: auto;
+}
+.tableText {
+	font-family: Tahoma;
+	font-size: 15px;
+}
+.formatButton {
+	border-radius: 20px;
+	background-position: center center;
+	font-family: Tahoma;
+	font-size: large;
+	font-style: normal;
+	background-color: #8BA4BC;
+	padding: 0px;
+	width: 80px;
+}
+.formatButtonTable {
+	font-family: Tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	background-color: #CCCCCC;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+.formatFirstLineTable {
+	background-color: #808080;
+}
+.formatSecondLineTable {
+	background-color: #C0C0C0;
+}
+
+.formStyle {
+	margin-left: 60px;
+}
+
+.StyleGenerateSchedule {
+	width: 150px;
+	height: 50px;
+	border-radius: 20px;
+	background-position: center center;
+	font-family: Tahoma;
+	font-size: large;
+	font-style: normal;
+	background-color: #8BA4BC;
+	padding: 0px;
+	
+}
+
+.bodyStyle {
+	background-color: #CCCCCC;
+}
+
+.centerText {
+	font-family: Tahoma;
+	font-size: 15px;
+	font-weight: bold;
+	z-index: auto;
+	text-align: center;
+}
+
+.formatTable {
+	border-width: thin;
+	border-color: #000000;
+	border-style: solid;
+	font-family: Tahoma;
+	font-size: 15px;
+	font-weight: bold;
+	z-index: auto;
+	text-align: center;
+}
+

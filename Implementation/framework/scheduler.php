@@ -1,5 +1,7 @@
 <?php
+require_once('db_connection.php');
 require_once('db_functions.php');
+require_once('employee.php');
 
 // TODO: Get needed info from the web page form before using any of the
 //    methods because of the initialization function. Basically, just like the Java program, 
@@ -16,58 +18,28 @@ class Scheduler {
 	private static $breakBetweenShifts;
 	private static $minWorkHours;
 	private static $maxWorkHours;
+	private static $dbconn;
 	private static $shiftStart; // start hour of every shift (Ex. shiftStart[0] - start hour of shift 1, shiftStar[1] - start hour of shift 2)
 	private static $occupiedWorkplace;	// occupiedWorkplace[day][shift number][work place number] 
 	private static $employees;	
 	private static $initialized = false;
 	
-	private static function initialize(){
+	public static function initialize($dbconn){
 		if(self::$initialized){
 			return;
-		}	
-		$currentWd = db_getWorkdays();
+		}
+		self::$dbconn = $dbconn;
+
+		$currentWd = db_getWorkdays($dbconn);
+		self::$workdays = array();
 		for ($i=0;$i<7;$i++){
-			if(in_array($i, $currentWd)){
-				$workdays[$i]=true;
+			if(in_array($i+1, $currentWd)){
+				self::$workdays[$i]=true;
 			}
 			else{
-				$workdays[$i]=false;
+				self::$workdays[$i]=false;
 			}
 		}
-
-		/*for(i=0;i<7;i++){
-			switch(i){
-				case 0: System.out.print("Is monday a workday (Y/N)?: ");
-						break;
-				case 1: System.out.print("Is tuesday a workday (Y/N)?: ");
-						break;
-				case 2: System.out.print("Is wednesday a workday (Y/N)?: ");
-						break;
-				case 3: System.out.print("Is thursday a workday (Y/N)?: ");
-						break;
-				case 4: System.out.print("Is friday a workday (Y/N)?: ");
-						break;
-				case 5: System.out.print("Is saturday a workday (Y/N)?: ");
-						break;
-				case 6: System.out.print("Is sunday a workday (Y/N)?: ");
-						break;
-				default:System.out.print("Error");
-			}
-			while(true){
-				String answer = sc.nextLine();
-				if(answer.equalsIgnoreCase("Y")){
-					workdays[i] = true;
-					break;
-				}
-				else if(answer.equalsIgnoreCase("N")){
-					workdays[i] = false;
-					break;
-				}
-				else{
-					System.out.println("Please answer with Y or N!");
-				}
-			}
-		}*/
 
 		/*System.out.print("Enter the number of the workplaces: ");
 		while(true){
@@ -79,28 +51,10 @@ class Scheduler {
 				break;
 		}*/
 
-		/*System.out.print("Enter the number of the employees: ");
-		while(true){
-			numEmployees = sc.nextInt();
-			if(numEmployees<=0){
-				System.out.print("The number must be positive!\nEnter again: ");
-			}
-			else
-				break;
-		}*/
-		
-		/*System.out.print("Enter the number of the shifts: ");
-		while(true){
-			numShifts = sc.nextInt();
-			if(numShifts<=0){
-				System.out.print("The number must be positive!\nEnter again: ");
-			}
-			else if(numShifts>24){
-				System.out.print("The number must be less than 24, or at most 24!\nEnter again: ");
-			}
-			else
-				break;
-		}*/
+
+		self::$numEmployees = db_getEmployeesCount($dbconn);		
+		self::$numShifts = db_getShiftsCount($dbconn);
+		echo 'EMPLOYEES: '.$numEmployees.'SHIFTS COUNT: '.$numShifts;
 
 		/*System.out.print("Enter the workday start hour: ");
 		while(true){
@@ -217,8 +171,16 @@ class Scheduler {
 
 		self::$initialized = true;
 	}
+
+	public static function getDBConnection(){
+		return self::$dbconn;	
+	}
 		
 	public static function &getWorkdays() {
+		echo 'working on work days.';
+		if(!is_array(self::$workdays)){
+			echo 'NO WORKDAYS!';
+		}
 		return self::$workdays;
 	}
 
@@ -584,6 +546,7 @@ class Scheduler {
 	}
 }
 
+Scheduler::initialize($dbconn);
 
 // ^^^^^^^^^^^^^^^^^^^ PHP 
 

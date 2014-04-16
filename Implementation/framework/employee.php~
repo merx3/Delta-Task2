@@ -165,9 +165,9 @@ class Employee{
 	}	
 
 	private function readEmployeeDataFromDatabase($id){
-		$empl_shifts = db_getEmployeeShifts($this->dbconn, $id);
+		$empl_shifs = db_getEmployeeShifts($this->dbconn, $id);
 		$empl_taken_shifts_by_day = array();
-		if(is_array($empl_shifts)){
+		if(is_array($empl_shifs)){
 			foreach($empl_shifts as $shift){
 				if ($shift["is_taken"]){
 					$shift_day = $shift["day"];

@@ -7,6 +7,8 @@ $hostname = "localhost";
 $dbhandle = mysqli_connect($hostname, $username, $password, "team1_delta")
   or die("Unable to connect to MySQL");
 
-//$selected = mysql_select_db("team1_test",$dbhandle)
- // or die("Could not select examples");
+if (mysqli_connect_errno($dbhandle))
+{
+    echo "Failed to connect to MySQL:" . mysqli_connect_error();
+}
 ?>
