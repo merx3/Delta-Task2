@@ -27,7 +27,7 @@
 <div >
 <ul class="days">
 	<input type="button" name="AddShift" value="Add" class="formatButton"/>
-	<input type="button" name="Cancel" onclick="window.location = 'WelcomePage.php';" value="Cancel" class="formatButton"/>
+	<input type="button" name="Cancel" value="Cancel" class="formatButton"/>
 </ul>
 </div>
 </form>

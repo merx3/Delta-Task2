@@ -63,7 +63,7 @@ Name: <input type="text" name="Name of Employee"/>
 </table>
 <br></br>
 <div><input type="submit" value="Add" class="formatButton"/>
-<input type="button" onclick="window.location = 'WelcomePage.php';" value="Cancel" class="formatButton"/>
+<div><input type="button" onclick="window.location = 'WelcomePage.php';" value="Cancel" class="formatButton"/>
 </div?>
 
 </form>

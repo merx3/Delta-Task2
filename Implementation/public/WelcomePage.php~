@@ -73,7 +73,7 @@ Employee max work hours (for 2 weeks): <input type="number" min="20" max="40" st
 <br>
 </br>
 <div class="textStyle">
-Shifts <input type="button" value="Add" onclick="window.location = 'AddNewShift.php';" class="formatButton"/>
+Shifts <input type="button" value="Add" class="formatButton"/>
 </div>
 <br>
 </br>

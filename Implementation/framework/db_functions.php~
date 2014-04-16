@@ -84,7 +84,7 @@
     }
 
     function db_getShiftsInDay($dbconn, $day){
-	if(!is_int($day){
+	if(!is_int($day)){
 	    throw new Exception('not valid day');
 	}
         $query = 'SELECT * FROM shifts ';
@@ -97,5 +97,13 @@
             $shifts[] = $row; 
 	}
         return $shifts;
+    }
+
+    function db_getWorkDesc($dbconn){
+        $query = 'SELECT * FROM work_desc ';
+
+	$result = mysqli_query($dbconn, $query);
+	$row = mysqli_fetch_assoc($result);
+        return $row;
     }
 ?>

@@ -54,80 +54,17 @@ class Scheduler {
 
 		self::$numEmployees = db_getEmployeesCount($dbconn);		
 		self::$numShifts = db_getShiftsCount($dbconn);
-		echo 'EMPLOYEES: '.$numEmployees.'SHIFTS COUNT: '.$numShifts;
-
-		/*System.out.print("Enter the workday start hour: ");
-		while(true){
-			workdayStart = sc.nextInt();
-			if(workdayStart<0){
-				System.out.print("The number must be positive or 0!\nEnter again: ");
-			}
-			else if(workdayStart>24){
-				System.out.print("The number must be less than 24, or at most 24!\nEnter again: ");
-			}
-			else
-				break;
-		}*/
-
-		/*System.out.print("Enter how many hours is one shift: ");
-		while(true){
-			int countErr = 0;
-			hoursInShift = sc.nextInt();
-			if(hoursInShift<1){
-				System.out.print("There is at least 1 hour in shift!\nEnter again: ");
-				countErr++;
-			}
-			if(hoursInShift>8){
-				System.out.print("There cannot be more than 8 hours in shift!\nEnter again: ");
-				countErr++;
-			}
-			if((numShifts*hoursInShift + workdayStart) > 24){
-				System.out.print("The number of shifts and the hours in shift cannot be completed in a workday!\nEnter again: ");
-				countErr++;
-			}
-			if(countErr == 0)
-				break;
-		}*/
-
-		/*System.out.print("Enter the break between shifts: ");
-		while(true){
-			int countErr = 0;
-			breakBetweenShifts = sc.nextInt();
-			if(breakBetweenShifts<0){
-				System.out.print("The number must be positive or 0!\nEnter again: ");
-				countErr++;
-			}
-			if(breakBetweenShifts>=24){
-				System.out.print("The number must be less than 24!\nEnter again: ");
-				countErr++;
-			}
-			if((numShifts*hoursInShift + (numShifts - 1)*breakBetweenShifts + workdayStart) > 24){
-				System.out.print("The number of shifts and the hours in shift cannot be completed in a workday!\nEnter again: ");
-				countErr++;
-			}
-			if(countErr == 0)
-				break;
-		}*/
-
-		/*System.out.print("Enter the workday end hour: ");
-		while(true){
-			int countErr = 0;
-			workdayEnd = sc.nextInt();
-			if(workdayEnd<=workdayStart){
-				System.out.print("The end of the workday must be after the start!\nEnter again: ");
-				countErr++;
-			}
-			if(workdayEnd>24){
-				System.out.print("The number must be less than 24, or at most 24!\nEnter again: ");
-				countErr++;
-			}
-			if(workdayEnd<(workdayStart + (numShifts*(hoursInShift+breakBetweenShifts)) - breakBetweenShifts)){
-				System.out.print("The value is not possible - the number of shifts is too big!\nEnter again: ");
-				countErr++;
-			}
-			if(countErr == 0)
-				break;
-		}*/
+		$all_shifts = db_getAllShifts($dbconn);
+		self::$workdayStart = (int)$all_shifts[0]["start"];
+		self::$hoursInShift = ((int)$all_shifts[0]["end"]) - self::$workdayStart;
+		self::$breakBetweenShifts = ((int)$all_shifts[1]["start"]) - ((int)$all_shifts[0]["end"]);		
+		$all_shifts_in_day = db_getShiftsInDay($dbconn,0);
+		$last_shift = end($all_shifts_in_day);
+		self::$workdayEnd = $last_shift["end"];	
+		$work_desc = db_getWorkDesc($dbconn);
+		self::$numWorkplaces = $work_desc["workplaces"];
+		self::$minWorkHours = $work_desc["employee_min"];
+		self::$maxWorkHours = $work_desc["employee_max"];
 
 		/*System.out.print("Enter the minimum hours every employee must have (for 2 work weeks): ");
 		while(true){
@@ -177,7 +114,6 @@ class Scheduler {
 	}
 		
 	public static function &getWorkdays() {
-		echo 'working on work days.';
 		if(!is_array(self::$workdays)){
 			echo 'NO WORKDAYS!';
 		}

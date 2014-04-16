@@ -98,4 +98,11 @@
 	}
         return $shifts;
     }
+
+    function db_getWorkDesc($dbconn){
+        $query = 'SELECT * FROM work_desc ';
+	$result = mysqli_query($dbconn, $query);
+	$row = mysqli_fetch_assoc($result);
+        return $row;
+    }
 ?>
