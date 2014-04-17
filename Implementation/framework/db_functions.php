@@ -105,4 +105,11 @@
 	$row = mysqli_fetch_assoc($result);
         return $row;
     }
+    
+    function db_addEmployee($dbconn, $empl_name, $empl_free_time){
+        $query = 'SELECT * FROM work_desc ';
+	$result = mysqli_query($dbconn, $query);
+	$row = mysqli_fetch_assoc($result);
+        return $row;
+    }
 ?>
