@@ -8,13 +8,14 @@
 </head>
 <body class="bodyStyle">
 
-<form method="post" class="formStyle">
+    <form method="post" action="http://google.com" class="formStyle">
 <div>
 <p><span class="WorkDaysStyle">Add New Employee</span></p>
 </div>
 <div class="textStyle">
 Name: <input type="text" name="Name of Employee"/>
 </div>
+        <?php echo "HELLLOOOOOOOOO"?>
 <div>
 <p class="textStyle">Free time</p>
 </div>
