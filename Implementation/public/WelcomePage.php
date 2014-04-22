@@ -99,7 +99,7 @@ Shifts <input type="button" value="Add" onclick="window.location = 'AddNewShift.
 <td class="formatTable">13-18</td>
 <td><input type="button" value="Edit" class="formatButtonTable"/>
 </td>
-<td><input type="button" value="Delhttps://github.com/merx3/Delta-Task2.gitete" class="formatButtonTable"/>
+<td><input type="button" value="Delete" class="formatButtonTable"/>
 </td>
 </tr>
 </table>
@@ -108,7 +108,7 @@ Shifts <input type="button" value="Add" onclick="window.location = 'AddNewShift.
 
 <div>
 <input type="button" value="Generate Schedule" class="StyleGenerateSchedule"/>
-<
+
 
 </div>
 </form>
