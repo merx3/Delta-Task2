@@ -23,8 +23,8 @@
         $query = 'SELECT COUNT(day) AS '.$result_col_name.' FROM shifts GROUP BY day LIMIT 1';
 	$result = mysqli_query($dbconn, $query);
 	$row = mysqli_fetch_assoc($result);
-	$num_employees = $row[$result_col_name];
-        return (int)$num_employees;
+	$num_shifts = $row[$result_col_name];
+        return (int)$num_shifts;
     }
 
     function db_getEmployeeName($dbconn, $empl_id){
@@ -43,7 +43,7 @@
 	if(!is_int($empl_id)){
 	    throw new Exception('not valid employee id');
 	}
-        $query = 'SELECT shifts.shift_id,day,start,end,shift_number,seat_number FROM shifts ';
+        $query = 'SELECT shifts.shift_id,day,start,end,is_taken,shift_number,seat_number FROM shifts ';
 	$query .= 'JOIN employee_shifts es ON shifts.shift_id = es.shift_id ';
 	$query .= 'WHERE es.employee_id='.$empl_id.' ';
 	$query .= 'ORDER BY day, start';
@@ -106,10 +106,81 @@
         return $row;
     }
     
-    function db_addEmployee($dbconn, $empl_name, $empl_free_time){
-        $query = 'SELECT * FROM work_desc ';
-	$result = mysqli_query($dbconn, $query);
-	$row = mysqli_fetch_assoc($result);
-        return $row;
+   /* function db_addEmployee($dbconn, $employee){
+        if($employee instanceof Employee){            
+            
+            
+            _addEmployeeToEmployeeTable($dbconn, $employee);
+            
+        }
+        else{
+            throw new Exception("Provided employee object is invalid");
+        }
     }
+    
+    function _addEmployeeToEmployeeTable($dbconn, &$employee){
+        $sql = 'INSERT INTO employees (employee_id, name) VALUES(?, ?)';
+        
+        $stmt;
+        
+        if($employee->getId() == 0){
+            $stmt = mysqli_prepare($dbconn, $sql);
+            mysqli_stmt_bind_param($stmt, 'is', $employee->getId(), $employee->getName());
+        }
+        else{
+            $sql = 'INSERT INTO employees (employee_id, name) VALUES(NULL, ?)';
+            $stmt = mysqli_prepare($dbconn, $sql);
+            mysqli_stmt_bind_param($stmt, 's', $employee->getName());
+        }
+        
+        if (mysqli_stmt_execute($stmt)) {
+            return mysqli_insert_id();
+        }
+            
+        throw new Exception("Could not execute query to table employees");
+    }
+    
+    function _addEmployeeToEmployeeFreeTimeTable($dbconn, &$employee){
+        $sql = 'INSERT INTO employee_free_times (employee_id, day, start, end) VALUES(?, ?, ?, ?)';
+        $empl_startHours = $employee->getStartHours();
+        $empl_endHours = $employee->getEndHours();
+        for($i=0;$i<count($empl_startHours);$i++){
+            if ($stmt = mysqli_prepare($dbconn, $sql)) {
+                mysqli_stmt_bind_param($stmt, 'iiii', $employee->getId(), $i, $empl_startHours[$i], $empl_endHours[$i]);
+
+                if (!mysqli_stmt_execute($stmt)) {
+                    throw new Exception("Could not execute query to table employees_free_times for employee ".$employee->getId());
+                }
+            }
+            else{
+                throw new Exception("Could not execute query to table employees_free_times for employee ".$employee->getId());
+            }            
+        }
+    }
+    
+    function _addEmployeeToEmployeeShifts($dbconn, &$employee){
+        $sql = 'INSERT INTO employees (employee_id, shift_id, is_taken, shift_number, seat_number) VALUES(?, ?, ?, ?, ?)';
+        
+        
+	$empl_availableShifts = $$employee->getAvailableShifts();
+	$empl_workShifts = $$employee->getWorkShifts();
+        for ($i=0;$i<count($empl_workShifts);$i++){
+            $work_shifts = db_getShiftsInDay($dbconn, $i);
+            for($j=0;$j<count($work_shifts);$j++){
+                if ($empl_availableShifts[$i][$j]) {
+                    if ($stmt = mysqli_prepare($dbconn, $sql)) {
+                        $is_taken = $empl_workShifts[$i][$j]==0 ? 0:1;
+                        mysqli_stmt_bind_param($stmt, 'iiiii', $employee->getId(), $work_shifts[$j]['shift_id'], $is_taken, $j, 1);
+
+                        if (!mysqli_stmt_execute($stmt)) {
+                            throw new Exception("Could not execute query to table employees");
+                        }
+                    }else
+                    {
+                        throw new Exception("Could not prepare statement");
+                    }
+                }
+            }
+        }
+    }*/
 ?>

@@ -16,26 +16,84 @@ class Employee{
 	private $availableHours;
 	private $availableShifts;
 	private $workShifts;
-	private $dbconn;
+	public static $dbconn;
 	
-	function __construct($employee_id){
-		if(!is_int($employee_id)){
+	function __construct(){		
+	}	
+        
+        public static function constructEmployeeFromDb($employee_id){
+            $employee = new Employee();
+            if(!is_int($employee_id)){
+                throw new Exception('id is not integer');
+            }
+            if($employee_id>0){
+                $employee->setId($employee_id);
+            }
+            else{
+                throw new Exception('id must be positive');
+            }
+            if(!isset(Employee::$dbconn)){
+                Employee::$dbconn = Scheduler::getDBConnection();
+            }
+            $res = $employee->readEmployeeDataFromDatabase($employee_id);
+            if($res != 0) {
+                throw new Exception('couldn\'t read employee '.$employee_id.' from database');
+            }
+            $employee->setDefaultWorkShifts();
+            $employee->setAvailableHoursAndAvailableShifts();
+            return $employee;
+        }
+        
+        public static function constructEmployee($employee_id, $name, $free_hours){
+            $employee = new Employee();    
+            if(!is_int($employee_id)){
 			throw new Exception('id is not integer');
 		}
-		if($employee_id>0){
-			$this->id=$id;
+                if (strlen($name) < 3) {
+                    throw new Exception("Name is too short.");
+                }
+                else{
+                    $employee->name = $name;
+                }
+                if (!is_array($free_hours)) {
+                    throw new Exception("Invalid free hours.");
+                }
+		if($employee_id>=0){
+			$employee->id=$id;
 		}
 		else{
 			throw new Exception('id must be positive');
 		}
-		$this->dbconn = Scheduler::getDBConnection();
-		$res = $this->readEmployeeDataFromDatabase($employee_id);
-		if($res != 0) {
-			throw new Exception('couldn\'t read employee '.$employee_id.' from database');
+		$employee->dbconn = Scheduler::getDBConnection();
+                
+                $employee->workHours = 0;
+		$employee->startHours = array();
+		$employee->endHours = array();
+                $employee->availableHours = array();
+                
+                
+		for($i=0; $i<14; $i++){
+                    $employee->availableHours[$i] = 0;
+                    $employee->workShifts[$i] = array();
+                    $shifts_in_day = db_getShiftsCount(Employee::$dbconn);
+                    if(is_int($free_hours[$i]['start']) && is_int($free_hours[$i]['end'])){ 
+                        $employee->startHours[$i] = $free_hours[$i]["start"];
+                        $employee->endHours[$i] = $free_hours[$i]["end"];	
+                    }
+                    else{
+                        throw new Exception('Invalid start/end hours in day '.$i);
+                    }	
 		}
-		$this->setDefaultWorkShifts();
-		$this->setAvailableHoursAndAvailableShifts();
-	}	
+                
+		$employee->setDefaultWorkShifts();
+		$employee->setAvailableHoursAndAvailableShifts();
+                $result = db_addEmployee($employee->dbconn, $employee);
+                
+		if($employee->id==0){
+			$employee->id=$result;
+		}
+                return $employee;
+	}
 	
 	public function getId(){
 		return $this->id;
@@ -177,8 +235,8 @@ class Employee{
 	}	
 
 	private function readEmployeeDataFromDatabase($id){
-		$empl_shifts = db_getEmployeeShifts($this->dbconn, $id);
-		$this->name = db_getEmployeeName($this->dbconn, $id);
+		$empl_shifts = db_getEmployeeShifts(Employee::$dbconn, $id);
+		$this->name = db_getEmployeeName(Employee::$dbconn, $id);
 		$empl_taken_shifts_by_day = array();
 		if(is_array($empl_shifts)){
 			foreach($empl_shifts as $shift){
@@ -192,7 +250,7 @@ class Employee{
 			}
 		}
 
-		$empl_free_time = db_getEmployeeFreeTime($this->dbconn, $id);
+		$empl_free_time = db_getEmployeeFreeTime(Employee::$dbconn, $id);
 		$empl_free_time_by_day = array();
 		foreach($empl_free_time as $free_time){
 			$day = $free_time["day"];			
@@ -203,11 +261,13 @@ class Employee{
 		$this->startHours = array();
 		$this->endHours = array();
 		$this->workShifts = array();
+                $this->availableHours = array();
 		for($i=0; $i<14; $i++){
 			$this->availableHours[$i] = 0;
 			$this->workShifts[$i] = array();
-			$shifts_in_day = count(db_getShiftsInDay($this->dbconn, $i));
+			$shifts_in_day = count(db_getShiftsInDay(Employee::$dbconn, $i));
 			if(array_key_exists($i,$empl_free_time_by_day)){
+                                // TODO: get to work print_r($empl_free_time_by_day[$i]);
 				$this->startHours[$i] = $empl_free_time_by_day[$i]["start"];
 				$this->endHours[$i] = $empl_free_time_by_day[$i]["end"];				
 			}

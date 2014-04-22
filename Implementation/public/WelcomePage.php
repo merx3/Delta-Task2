@@ -85,23 +85,23 @@ Shifts <input type="button" value="Add" onclick="window.location = 'AddNewShift.
 <td class="formatTable"></td>
 <td class="formatTable"></td>
 </tr>
-<tr class="formatSecondLineTable">
-<td class="formatTable">Morning</td>
-<td class="formatTable">9-12</td>
-<td><input type="button" value="Edit" class="formatButtonTable"/>
-</td>
-<td><input type="button" value="Delete" class="formatButtonTable"/>
-</td>
-</tr>
+    
+<?php
+    $numShift = Scheduler::getNumShifts();
+    $shiftStart = Scheduler::getShiftStart();
+    $hoursInShift = Scheduler::getHoursInShift();
+    for ($i=1;$i<$numShift;$i++){
+        echo "<tr class=\"formatSecondLineTable\">";
+        echo "<td class=\"formatTable\">".$i."</td>";
+        echo "<td class=\"formatTable\">".$shiftStart[$i]."-".($shiftStart[$i] + $hoursInShift)."</td>";
+        echo "<td><input type=\"button\" value=\"Edit\" class=\"formatButtonTable\"/>";
+        echo "</td>";
+        echo "<td><a href='delete/php?item=shift&id=".($i-1)."'><input type=\"button\" value=\"Delete\" class=\"formatButtonTable\"/></a>";
+        echo "</td>";
+        echo "</tr>";
+    }
+?>
 
-<tr>
-<td class="formatTable">Evening</td>
-<td class="formatTable">13-18</td>
-<td><input type="button" value="Edit" class="formatButtonTable"/>
-</td>
-<td><input type="button" value="Delete" class="formatButtonTable"/>
-</td>
-</tr>
 </table>
 <br>
 </br>

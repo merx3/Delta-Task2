@@ -103,7 +103,7 @@ class Scheduler {
 					self::$occupiedWorkplace[$j][$k][$l] = 0;
 		self::$employees = array();
 		for($i=0;$i<self::$numEmployees;$i++){
-			self::$employees[] = new Employee($i+1);
+			self::$employees[] = Employee::constructEmployeeFromDb($i+1);
 		}
 
 		self::$initialized = true;
