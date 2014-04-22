@@ -8,15 +8,20 @@
 </head>
 <body class="bodyStyle">
 
-<form method="post" class="formStyle">
+<<<<<<< HEAD
+    <form method="post" action="http://google.com" class="formStyle">
+=======
+<form method="post" action="action_pages/addemployee.php" class="formStyle">
+>>>>>>> ba3bf1559009f407445c04453d8a3b18615a38ea
 <div>
 <p><span class="WorkDaysStyle">Add New Employee</span></p>
 </div>
 <div class="textStyle">
 Name: <input type="text" name="Name of Employee"/>
 </div>
+        <?php echo "HELLLOOOOOOOOO"?>
 <div>
-<p class="textStyle">Free time</p>
+<p class="textStyle">Free time for First week</p>
 </div>
 <table frame="border" class="formatTable" >
 <tr class="formatFirstLineTable">
@@ -26,45 +31,91 @@ Name: <input type="text" name="Name of Employee"/>
 </tr>
 <tr class="formatSecondLineTable">
 <td class="formatTable">Monday</td>
-<td class="formatTable"><input type="text" name="MondayFrom"/></td>
-<td class="formatTable"><input type="text" name="MondayTo"/></td>
+<td class="formatTable"><input type="text" name="weeks[0][from]"/></td>
+<td class="formatTable"><input type="text" name="weeks[0][to]"/></td>
 </tr>
 
 <tr class="formatSecondLineTable">
 <td class="formatTable">Tuesday</td>
-<td class="formatTable"><input type="text" name="TuesdayFrom"/></td>
-<td class="formatTable"><input type="text" name="TuesdayTo"/></td>
+<td class="formatTable"><input type="text" name="weeks[1][from]"/></td>
+<td class="formatTable"><input type="text" name="weeks[1][to]"/></td>
 </tr>
 <tr class="formatSecondLineTable">
 <td class="formatTable">Wednesday</td>
-<td class="formatTable"><input type="text" name="WednesdayFrom"/></td>
-<td class="formatTable"><input type="text" name="WednesdayTo"/></td>
+<td class="formatTable"><input type="text" name="weeks[2][from]"/></td>
+<td class="formatTable"><input type="text" name="weeks[2][to]"/></td>
 </tr>
 <tr class="formatSecondLineTable">
 <td class="formatTable">Thursday</td>
-<td class="formatTable"><input type="text" name="ThursdayFrom"/></td>
-<td class="formatTable"><input type="text" name="ThursdayTo"/></td>
+<td class="formatTable"><input type="text" name="weeks[3][from]"/></td>
+<td class="formatTable"><input type="text" name="weeks[3][to]"/></td>
 </tr>
 <tr class="formatSecondLineTable">
 <td class="formatTable">Friday</td>
-<td class="formatTable"><input type="text" name="FridayFrom"/></td>
-<td class="formatTable"><input type="text" name="FridayTo"/></td>
+<td class="formatTable"><input type="text" name="weeks[4][from]"/></td>
+<td class="formatTable"><input type="text" name="weeks[4][to]"/></td>
 </tr>
 <tr class="formatSecondLineTable">
 <td class="formatTable">Saturday</td>
-<td class="formatTable"><input type="text" name="SaturdayFrom"/></td>
-<td class="formatTable"><input type="text" name="SaturdayTo"/></td>
+<td class="formatTable"><input type="text" name="weeks[5][from]"/></td>
+<td class="formatTable"><input type="text" name="weeks[5][to]"/></td>
 </tr>
 <tr class="formatSecondLineTable">
 <td class="formatTable">Sunday</td>
-<td class="formatTable"><input type="text" name="SundayFrom"/></td>
-<td class="formatTable"><input type="text" name="SundayTo"/></td>
+<td class="formatTable"><input type="text" name="weeks[6][from]"/></td>
+<td class="formatTable"><input type="text" name="weeks[6][to]"/></td>
+</tr>
+</table>
+<br></br>
+<p class="textStyle">Free time for Second week</p>
+</div>
+<table frame="border" class="formatTable" >
+<tr class="formatFirstLineTable">
+<td class="formatTable">Day</td>
+<td class="formatTable">From</td>
+<td class="formatTable">To</td>
+</tr>
+<tr class="formatSecondLineTable">
+<td class="formatTable">Monday</td>
+<td class="formatTable"><input type="text" name="weeks[7][from]"/></td>
+<td class="formatTable"><input type="text" name="weeks[7][to]"/></td>
+</tr>
+
+<tr class="formatSecondLineTable">
+<td class="formatTable">Tuesday</td>
+<td class="formatTable"><input type="text" name="weeks[8][from]"/></td>
+<td class="formatTable"><input type="text" name="weeks[8][to]"/></td>
+</tr>
+<tr class="formatSecondLineTable">
+<td class="formatTable">Wednesday</td>
+<td class="formatTable"><input type="text" name="weeks[9][from]"/></td>
+<td class="formatTable"><input type="text" name="weeks[9][to]"/></td>
+</tr>
+<tr class="formatSecondLineTable">
+<td class="formatTable">Thursday</td>
+<td class="formatTable"><input type="text" name="weeks[10][from]"/></td>
+<td class="formatTable"><input type="text" name="weeks[10][to]"/></td>
+</tr>
+<tr class="formatSecondLineTable">
+<td class="formatTable">Friday</td>
+<td class="formatTable"><input type="text" name="weeks[11][from]"/></td>
+<td class="formatTable"><input type="text" name="weeks[11][to]"/></td>
+</tr>
+<tr class="formatSecondLineTable">
+<td class="formatTable">Saturday</td>
+<td class="formatTable"><input type="text" name="weeks[12][from]"/></td>
+<td class="formatTable"><input type="text" name="weeks[12][to]"/></td>
+</tr>
+<tr class="formatSecondLineTable">
+<td class="formatTable">Sunday</td>
+<td class="formatTable"><input type="text" name="weeks[13][from]"/></td>
+<td class="formatTable"><input type="text" name="weeks[13][to]"/></td>
 </tr>
 </table>
 <br></br>
 <div><input type="submit" value="Add" class="formatButton"/>
-<div><input type="button" onclick="window.location = 'WelcomePage.php';" value="Cancel" class="formatButton"/>
-</div?>
+<input type="button" onclick="window.location = 'WelcomePage.php';" value="Cancel" class="formatButton"/>
+</div>
 
 </form>
 </body>

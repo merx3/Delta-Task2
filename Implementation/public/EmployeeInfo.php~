@@ -39,7 +39,7 @@
 <tr class="formatSecondLineTable">
 <td class="formatTable">Monday</td>
 <?php $EmployeeDayStart = Scheduler::getEmployees();?>
-<?php $EmployeeDayStartInit=$EmployeeDayStart[($_GET["id"])]->getStartHours() ?> 
+<?php $EmployeeDayStartInit=$EmployeeDayStart[($_GET["id"])]->getStartHours() ?> /
 <?php $EmployeeDayEnd = Scheduler::getEmployees();?>
 <?php $EmployeeDayEndInit=$EmployeeDayEnd[($_GET["id"])]->getEndHours() ?> 
 <td class="formatTable"><?php echo($EmployeeDayStartInit[0]); ?> </td>
