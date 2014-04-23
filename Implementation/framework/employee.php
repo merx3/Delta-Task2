@@ -39,62 +39,61 @@ class Employee{
             if($res != 0) {
                 throw new Exception('couldn\'t read employee '.$employee_id.' from database');
             }
-            $employee->setDefaultWorkShifts();
-            $employee->setAvailableHoursAndAvailableShifts();
             return $employee;
         }
         
-        public static function constructEmployee($employee_id, $name, $free_hours){
-            $employee = new Employee();    
-            if(!is_int($employee_id)){
+	public static function constructEmployee($employee_id, $name, $free_hours){
+		$employee = new Employee();    
+		if(!is_int($employee_id)){
 			throw new Exception('id is not integer');
 		}
-                if (strlen($name) < 3) {
-                    throw new Exception("Name is too short.");
-                }
-                else{
-                    $employee->name = $name;
-                }
-                if (!is_array($free_hours)) {
-                    throw new Exception("Invalid free hours.");
-                }
+		if (strlen($name) < 3) {
+			throw new Exception("Name is too short.");
+		}
+		else{
+			$employee->name = $name;
+		}
+		if (!is_array($free_hours)) {
+			throw new Exception("Invalid free hours.");
+		}
 		if($employee_id>=0){
-			$employee->id=$id;
+			$employee->id=$employee_id;
 		}
 		else{
 			throw new Exception('id must be positive');
 		}
-		$employee->dbconn = Scheduler::getDBConnection();
-                
-                $employee->workHours = 0;
+		if(!isset(Employee::$dbconn)){
+			Employee::$dbconn = Scheduler::getDBConnection();
+		}
+		
+		$employee->workHours = 0;
 		$employee->startHours = array();
 		$employee->endHours = array();
-                $employee->availableHours = array();
-                
-                
+				$employee->availableHours = array();
+				
+				
 		for($i=0; $i<14; $i++){
-                    $employee->availableHours[$i] = 0;
-                    $employee->workShifts[$i] = array();
-                    $shifts_in_day = db_getShiftsCount(Employee::$dbconn);
-                    if(is_int($free_hours[$i]['start']) && is_int($free_hours[$i]['end'])){ 
-                        $employee->startHours[$i] = $free_hours[$i]["start"];
-                        $employee->endHours[$i] = $free_hours[$i]["end"];	
-                    }
-                    else{
-                        throw new Exception('Invalid start/end hours in day '.$i);
-                    }	
+			$employee->availableHours[$i] = 0;
+			$employee->workShifts[$i] = array();
+			if(is_int($free_hours[$i]['from']) && is_int($free_hours[$i]['to'])){ 
+				$employee->startHours[$i] = $free_hours[$i]["from"];
+				$employee->endHours[$i] = $free_hours[$i]["to"];	
+			}
+			else{
+				throw new Exception('Invalid start/end hours in day '.$i);
+			}	
 		}
-                
+				
 		$employee->setDefaultWorkShifts();
 		$employee->setAvailableHoursAndAvailableShifts();
-                $result = db_addEmployee($employee->dbconn, $employee);
-                
+		$result = db_addEmployee(Employee::$dbconn, $employee);
+				
 		if($employee->id==0){
 			$employee->id=$result;
 		}
-                return $employee;
+		return $employee;
 	}
-	
+
 	public function getId(){
 		return $this->id;
 	}
@@ -254,7 +253,7 @@ class Employee{
 		$empl_free_time_by_day = array();
 		foreach($empl_free_time as $free_time){
 			$day = $free_time["day"];			
-			$empl_free_time_by_day[$day][] = $free_time;
+			$empl_free_time_by_day[$day] = $free_time;
 		}
 	
 		$this->workHours = 0;
@@ -265,9 +264,8 @@ class Employee{
 		for($i=0; $i<14; $i++){
 			$this->availableHours[$i] = 0;
 			$this->workShifts[$i] = array();
-			$shifts_in_day = count(db_getShiftsInDay(Employee::$dbconn, $i));
+			$shifts_in_day = Scheduler::getNumShifts();
 			if(array_key_exists($i,$empl_free_time_by_day)){
-                                // TODO: get to work print_r($empl_free_time_by_day[$i]);
 				$this->startHours[$i] = $empl_free_time_by_day[$i]["start"];
 				$this->endHours[$i] = $empl_free_time_by_day[$i]["end"];				
 			}
@@ -286,11 +284,40 @@ class Employee{
 			}	
 		}
 	}
+		
+	public function getEmployeeSchedule(){
+			$schedule = array();
+			$schedule['messages'] = array();
+			$schedule['employee_name'] = $this->getName();
+			if ($this->workHours < Scheduler::getMinWorkHours()) {
+				$out = "Couldn't schedule enough shifts for employee ".($this->getName()).'<br/>';
+				$out .= "Hours scheduled for the two weeks: ".$this->workHours."(minimum required: ".Scheduler::getMinWorkHours().")<br/><br/>";
+				$schedule['messages'][] = $out;
+			}
+			else{
+				$out = "Hours scheduled for the two weeks for employee".$this->getName().": ".$this->workHours.'<br/><br/>';
+				$schedule['messages'][] = $out;
+			}
+			for ($i = 0;$i < 14; $i++){
+				$schedule[$i] = $this->getShifts($i);
+			}
+			return $schedule;
+	}
+	
+	
+	private function getShifts($day){
+		$shifts = array();
+		for ($i = 0;$i < Scheduler::getNumShifts(); $i++){
+			if($this->workShifts[$day][$i] > 0){
+				$shifts[] = $i;
+			}
+		}
+		return $shifts;
+	}
 }
 
-?>
 
-
+/*
 
 <!-- ^^^^^^^^^ PHP -->
 
@@ -531,3 +558,6 @@ public class Employee{
 		}
 	}
 }-->
+*/
+
+?>

@@ -13,27 +13,27 @@
 </head>
 
 <body class="bodyStyle">
-<form method="post" class="formStyle">
+<form method="post" action="Schedule.php" class="formStyle">
 <div>
 <p><span class="WorkDaysStyle">Work days</span></p>
 </div>
 <div >
 <ul class="days">
 	<?php $currentWD = Scheduler::getWorkdays();?>
-	<input type="checkbox" name="monday" value="Monday" <?php if($currentWD[0]) { echo 'checked'; }?>/>Monday
+	<input type="checkbox" name="workdays[]" value="Monday" <?php if($currentWD[0]) { echo 'checked'; }?>/>Monday
 	
 
-	<input type="checkbox" name="tuesday" value="Tuesday" <?php if($currentWD[1]) { echo 'checked'; }?>/>Tuesday 
+	<input type="checkbox" name="workdays[]" value="Tuesday" <?php if($currentWD[1]) { echo 'checked'; }?>/>Tuesday 
 
-	<input type="checkbox" name="wednesday" value="Wednesday" <?php if($currentWD[2]) { echo 'checked'; }?>/>Wednesday 
+	<input type="checkbox" name="workdays[]" value="Wednesday" <?php if($currentWD[2]) { echo 'checked'; }?>/>Wednesday 
 
-	<input type="checkbox" name="thursday" value="Thursday" <?php if($currentWD[3]) { echo 'checked'; }?>/>Thursday 
+	<input type="checkbox" name="workdays[]" value="Thursday" <?php if($currentWD[3]) { echo 'checked'; }?>/>Thursday 
 
-	<input type="checkbox" name="friday" value="Friday" <?php if($currentWD[4]) { echo 'checked'; }?>/>Friday    
+	<input type="checkbox" name="workdays[]" value="Friday" <?php if($currentWD[4]) { echo 'checked'; }?>/>Friday    
 
-	<input type="checkbox" name="saturday" value="Saturday" <?php if($currentWD[5]) { echo 'checked'; }?>/>Saturday    
+	<input type="checkbox" name="workdays[]" value="Saturday" <?php if($currentWD[5]) { echo 'checked'; }?>/>Saturday    
 
-	<input type="checkbox" name="sunday" value="Sunday" <?php if($currentWD[6]) { echo 'checked'; }?>/>Sunday 
+	<input type="checkbox" name="workdays[]" value="Sunday" <?php if($currentWD[6]) { echo 'checked'; }?>/>Sunday 
 </ul>
 </div>
 <br>
@@ -57,7 +57,7 @@ Employee max work hours (for 2 weeks): <input type="number" min="20" max="40" st
 </br>
 <div>
 	<span class="textStyle">Employees</span> 
-	<input type="button" value="Add" class="formatButton" onclick="window.location = 'AddNewEployee.php';"/>
+	<input type="button" value="Add" class="formatButton" onclick="window.location = 'AddNewEmployee.php';"/>
 </div>
 <div>
 <ul>
@@ -107,7 +107,7 @@ Shifts <input type="button" value="Add" onclick="window.location = 'AddNewShift.
 </br>
 
 <div>
-<input type="button" value="Generate Schedule" class="StyleGenerateSchedule"/>
+<input type="submit" value="Generate Schedule" class="StyleGenerateSchedule"/>
 
 
 </div>

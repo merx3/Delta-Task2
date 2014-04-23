@@ -57,17 +57,17 @@
     }
 	
     function db_getEmployeeFreeTime($dbconn, $empl_id){
-	if(!is_int($empl_id)){
-	    throw new Exception('not valid employee id');
-	}
-        $query = 'SELECT * FROM employee_free_times ';
-	$query .= 'WHERE employee_id ='.$empl_id;
+		if(!is_int($empl_id)){
+			throw new Exception('not valid employee id');
+		}
+		$query = 'SELECT * FROM employee_free_times ';
+		$query .= 'WHERE employee_id ='.$empl_id;
 
-	$result = mysqli_query($dbconn, $query);
-	$free_times = array();
-	while($row = mysqli_fetch_assoc($result)){
-            $free_times[] = $row; 
-	}
+		$result = mysqli_query($dbconn, $query);
+		$free_times = array();
+		while($row = mysqli_fetch_assoc($result)){
+				$free_times[] = $row; 
+		}
         return $free_times;
     }
 
@@ -106,12 +106,9 @@
         return $row;
     }
     
-   /* function db_addEmployee($dbconn, $employee){
-        if($employee instanceof Employee){            
-            
-            
+    function db_addEmployee($dbconn, $employee){
+        if($employee instanceof Employee){
             _addEmployeeToEmployeeTable($dbconn, $employee);
-            
         }
         else{
             throw new Exception("Provided employee object is invalid");
@@ -162,25 +159,28 @@
         $sql = 'INSERT INTO employees (employee_id, shift_id, is_taken, shift_number, seat_number) VALUES(?, ?, ?, ?, ?)';
         
         
-	$empl_availableShifts = $$employee->getAvailableShifts();
-	$empl_workShifts = $$employee->getWorkShifts();
-        for ($i=0;$i<count($empl_workShifts);$i++){
-            $work_shifts = db_getShiftsInDay($dbconn, $i);
-            for($j=0;$j<count($work_shifts);$j++){
-                if ($empl_availableShifts[$i][$j]) {
-                    if ($stmt = mysqli_prepare($dbconn, $sql)) {
-                        $is_taken = $empl_workShifts[$i][$j]==0 ? 0:1;
-                        mysqli_stmt_bind_param($stmt, 'iiiii', $employee->getId(), $work_shifts[$j]['shift_id'], $is_taken, $j, 1);
+		$empl_availableShifts = $$employee->getAvailableShifts();
+		$empl_workShifts = $$employee->getWorkShifts();
+		for ($i=0;$i<count($empl_workShifts);$i++){
+			$work_shifts = db_getShiftsInDay($dbconn, $i);
+			for($j=0;$j<count($work_shifts);$j++){
+				if ($empl_availableShifts[$i][$j]) {
+					if ($stmt = mysqli_prepare($dbconn, $sql)) {
+						$is_taken = $empl_workShifts[$i][$j]==0 ? 0:1;
+						$empl_id_temp = $employee->getId();
+						$wshift = $work_shifts[$j]['shift_id'];
+						$seat_number = 1;
+						mysqli_stmt_bind_param($stmt, 'iiiii', $empl_id_temp, $wshift, $is_taken, $j, $seat_number);
 
-                        if (!mysqli_stmt_execute($stmt)) {
-                            throw new Exception("Could not execute query to table employees");
-                        }
-                    }else
-                    {
-                        throw new Exception("Could not prepare statement");
-                    }
-                }
-            }
+						if (!mysqli_stmt_execute($stmt)) {
+							throw new Exception("Could not execute query to table employees");
+						}
+					}else
+					{
+						throw new Exception("Could not prepare statement");
+					}
+				}
+			}
         }
-    }*/
+    }
 ?>

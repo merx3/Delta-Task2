@@ -159,7 +159,64 @@ class Employee{
 			}
 		}
 	}	
-}
+	
+	public function getEmployeeSchedule(){
+			$schedule = array();
+			$schedule['errors'] = array();
+			if ($this->workHours < Scheduler::getMinWorkHours()) {
+				$out = "Couldn't schedule enough shifts to attend.")
+				fileWriter.printf("Hours scheduled for the two weeks: %d(minimum required: %d)",this.workHours, Scheduler.getMinWorkHours());
+				fileWriter.println();
+			}
+			else{
+				fileWriter.printf("Hours scheduled for the two weeks: %d",this.workHours);
+				fileWriter.println();
+			}
+			fileWriter.println("First Week");
+			fileWriter.printf("Monday ");
+			printSpec(0,fileWriter);
+			fileWriter.println();
+			fileWriter.printf("Tuesday ");
+			printSpec(1,fileWriter);
+			fileWriter.println();
+			fileWriter.printf("Wednesday ");
+			printSpec(2,fileWriter);
+			fileWriter.println();
+			fileWriter.printf("Thirsday ");
+			printSpec(3,fileWriter);
+			fileWriter.println();
+			fileWriter.printf("Friday ");
+			printSpec(4,fileWriter);
+			fileWriter.println();
+			fileWriter.printf("Saturday ");
+			printSpec(5,fileWriter);
+			fileWriter.println();
+			fileWriter.printf("Sunday ");
+			printSpec(6,fileWriter);
+			fileWriter.println();
+			fileWriter.println("Second Week");
+			fileWriter.printf("Monday ");
+			printSpec(7,fileWriter);
+			fileWriter.println();
+			fileWriter.printf("Tuesday ");
+			printSpec(8,fileWriter);
+			fileWriter.println();
+			fileWriter.printf("Wednesday ");
+			printSpec(9,fileWriter);
+			fileWriter.println();
+			fileWriter.printf("Thirsday ");
+			printSpec(10,fileWriter);
+			fileWriter.println();
+			fileWriter.printf("Friday ");
+			printSpec(11,fileWriter);
+			fileWriter.println();
+			fileWriter.printf("Saturday ");
+			fileWriter.println();
+			printSpec(12,fileWriter);
+			fileWriter.println();
+			fileWriter.printf("Sunday ");
+			printSpec(13,fileWriter);
+	}
 
 ?>
 

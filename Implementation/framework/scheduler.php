@@ -316,12 +316,13 @@ class Scheduler {
 		$occupiedCount = self::getEmployeesCountInShift($day, $shift);
 		
 		if ($occupiedCount < self::$numWorkplaces) {
-			$orderedByFreeTime = self::sortEmployeesByFreeTimeInDay($employees, $day);
+			$orderedByFreeTime = self::sortEmployeesByFreeTimeInDay(self::$employees, $day);
 			for ($i =  count($orderedByFreeTime) - 1; $i >= 0; $i--) {
-				$emp = $orderedByFreeTime[i];
+				$emp = $orderedByFreeTime[$i];
 				$empWS = $emp->getWorkShifts();
 				$empAS = $emp->getAvailableShifts();
-				if ($empWS[$day][$shift] == 0 && $empAS[$day][$shift]) {
+				$something = $empWS[$day][$shift];
+				if ($something == 0 && $empAS[$day][$shift]) {
 					self::enrollEmployee($emp, $day, $shift);
 					self::addMoreHoursForShift($day,$shift);
 					break;
@@ -367,7 +368,7 @@ class Scheduler {
 		}
 		for ($i = 0; $i < count($orderedEmployees); $i++) {
 			$empiAH = $orderedEmployees[$i]->getAvailableHours();
-			$currentFreeHours = $empAH[$day];
+			$currentFreeHours = $empiAH[$day];
 			for ($j = $i + 1; $j < count($orderedEmployees); $j++) {
 				$empjAH = $orderedEmployees[$j]->getAvailableHours();
 				$nextFreeHours = $empjAH[$day];
@@ -385,7 +386,7 @@ class Scheduler {
 	private static function sortEmployeesByWorkHours($employees) {
 		//int currentWorkHours, nextWorkHours;
 		//LinkedList<Employee> orderedEmployees = new LinkedList<Employee>(employees);
-		$orderedEmployees = arrray();
+		$orderedEmployees = array();
 		foreach($employees as $employee){
 			$orderedEmployees[] = $employee;
 		}
@@ -411,7 +412,7 @@ class Scheduler {
 		$indexOfEmployeeWithMostWorkHours = self::$numEmployees - 1;
 		$time1 = round(microtime(true) * 1000); // get time in milliseconds
 		while(true){
-			$employeesTemp = self::sortEmployeesByWorkHours($employees);
+			$employeesTemp = self::sortEmployeesByWorkHours(self::$employees);
 			while($result != 0){
 				$result = self::exchangeHours(($employeesTemp[$indexOfEmployeeWithLeastWorkHours]->getId()-1), ($employeesTemp[$indexOfEmployeeWithMostWorkHours]->getId()-1));
 				if($result != 0) $indexOfEmployeeWithMostWorkHours--;
